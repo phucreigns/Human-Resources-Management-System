@@ -1,0 +1,23 @@
+server:
+  port: ${HR_SERVICE_PORT:8091}
+  servlet:
+    context-path: /hr
+
+spring:
+  application:
+    name: hr-service
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${HR_SERVICE_DB:HrService}
+    driver-class-name: org.postgresql.Driver
+    username: ${POSTGRES_USERNAME}
+    password: ${POSTGRES_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://${AUTH0_DOMAIN}
+
