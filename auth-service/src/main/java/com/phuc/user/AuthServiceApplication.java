@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
 @EnableFeignClients
-public class UserServiceApplication {
+public class AuthServiceApplication {
 
 	public static void main(String[] args) {
 		Dotenv dotenv = Dotenv.configure()
@@ -15,7 +15,7 @@ public class UserServiceApplication {
 				.ignoreIfMissing()
 				.load();
 		setSpringProperties(dotenv);
-		SpringApplication.run(UserServiceApplication.class, args);
+		SpringApplication.run(AuthServiceApplication.class, args);
 	}
 
 	private static void setSpringProperties(Dotenv dotenv) {
