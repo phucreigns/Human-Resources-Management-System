@@ -1,7 +1,9 @@
 package com.phuc.file.service.Impl;
 
+import com.phuc.file.dto.request.UploadFileRequest;
 import com.phuc.file.dto.response.FileResponse;
 import com.phuc.file.entity.File;
+import com.phuc.file.enums.DocumentType;
 import com.phuc.file.mapper.FileMapper;
 import com.phuc.file.repository.FileRepository;
 import com.phuc.file.service.FileService;
@@ -101,6 +103,75 @@ public class FileServiceImpl implements FileService {
             File fileEntity = fileRepository.findByName(fileName)
                     .orElseThrow(() -> new AppException(ErrorCode.FILE_NOT_FOUND));
             return fileMapper.toFileResponse(fileEntity);
+      }
+
+      // HRMS Document Methods
+      @Override
+      public FileResponse uploadDocument(MultipartFile file, UploadFileRequest request, String uploadedBy) throws IOException {
+            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+
+            uploadToS3(file, fileName);
+
+            String fileUrl = generateFileUrl(fileName);
+            File fileEntity = File.builder()
+                    .fileId(UUID.randomUUID().toString())
+                    .name(fileName)
+                    .url(fileUrl)
+                    .size(String.valueOf(file.getSize()))
+                    .type(file.getContentType())
+                    .documentType(request.getDocumentType())
+                    .employeeId(request.getEmployeeId())
+                    .uploadedBy(uploadedBy)
+                    .description(request.getDescription())
+                    .status(request.getStatus() != null ? request.getStatus() : "ACTIVE")
+                    .createdAt(LocalDateTime.now())
+                    .updatedAt(LocalDateTime.now())
+                    .build();
+
+            fileRepository.save(fileEntity);
+            log.info("Document uploaded: {} for employee: {} with type: {}", fileName, request.getEmployeeId(), request.getDocumentType());
+
+            return fileMapper.toFileResponse(fileEntity);
+      }
+
+      @Override
+      public List<FileResponse> getFilesByEmployeeId(String employeeId) {
+            List<File> files = fileRepository.findByEmployeeId(employeeId);
+            return files.stream()
+                    .map(fileMapper::toFileResponse)
+                    .toList();
+      }
+
+      @Override
+      public List<FileResponse> getFilesByEmployeeIdAndStatus(String employeeId, String status) {
+            List<File> files = fileRepository.findByEmployeeIdAndStatus(employeeId, status);
+            return files.stream()
+                    .map(fileMapper::toFileResponse)
+                    .toList();
+      }
+
+      @Override
+      public List<FileResponse> getFilesByDocumentType(DocumentType documentType) {
+            List<File> files = fileRepository.findByDocumentType(documentType);
+            return files.stream()
+                    .map(fileMapper::toFileResponse)
+                    .toList();
+      }
+
+      @Override
+      public List<FileResponse> getFilesByEmployeeIdAndDocumentType(String employeeId, DocumentType documentType) {
+            List<File> files = fileRepository.findByEmployeeIdAndDocumentType(employeeId, documentType);
+            return files.stream()
+                    .map(fileMapper::toFileResponse)
+                    .toList();
+      }
+
+      @Override
+      public List<FileResponse> getFilesByEmployeeIdAndDocumentTypeAndStatus(String employeeId, DocumentType documentType, String status) {
+            List<File> files = fileRepository.findByEmployeeIdAndDocumentTypeAndStatus(employeeId, documentType, status);
+            return files.stream()
+                    .map(fileMapper::toFileResponse)
+                    .toList();
       }
 
       private String generateFileUrl(String fileName) {

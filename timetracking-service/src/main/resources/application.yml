@@ -1,0 +1,23 @@
+server:
+  port: ${TIME_TRACKING_SERVICE_PORT:8092}
+  servlet:
+    context-path: /timetracking
+
+spring:
+  application:
+    name: timetracking-service
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${TIME_TRACKING_SERVICE_DB:TimeTrackingService}
+    driver-class-name: org.postgresql.Driver
+    username: ${POSTGRES_USERNAME}
+    password: ${POSTGRES_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://${AUTH0_DOMAIN}
+
