@@ -16,7 +16,6 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 @Slf4j
@@ -39,7 +38,6 @@ public class PositionServiceImpl implements PositionService {
 
     @Override
     public List<PositionResponse> getPositionsByDepartmentId(Long departmentId) {
-        // Verify department exists
         departmentRepository.findByDepartmentId(departmentId)
                 .orElseThrow(() -> new AppException(ErrorCode.DEPARTMENT_NOT_FOUND));
 
@@ -59,7 +57,6 @@ public class PositionServiceImpl implements PositionService {
     @Override
     @Transactional
     public PositionResponse createPosition(PositionCreateRequest request) {
-        // Verify department exists
         departmentRepository.findByDepartmentId(request.getDepartmentId())
                 .orElseThrow(() -> new AppException(ErrorCode.DEPARTMENT_NOT_FOUND));
 

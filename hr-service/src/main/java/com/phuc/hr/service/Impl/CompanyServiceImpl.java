@@ -15,7 +15,6 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 @Slf4j
@@ -45,7 +44,6 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     @Transactional
     public CompanyResponse createCompany(CompanyCreateRequest request) {
-        // Check if tax code already exists
         if (request.getTaxCode() != null && !request.getTaxCode().isEmpty()) {
             if (companyRepository.existsByTaxCode(request.getTaxCode())) {
                 throw new AppException(ErrorCode.TAX_CODE_EXISTED);
@@ -64,7 +62,6 @@ public class CompanyServiceImpl implements CompanyService {
         Company company = companyRepository.findByCompanyId(companyId)
                 .orElseThrow(() -> new AppException(ErrorCode.COMPANY_NOT_FOUND));
 
-        // Check if tax code is being updated and if it already exists
         if (request.getTaxCode() != null && !request.getTaxCode().isEmpty()) {
             companyRepository.findByTaxCode(request.getTaxCode())
                     .ifPresent(existingCompany -> {

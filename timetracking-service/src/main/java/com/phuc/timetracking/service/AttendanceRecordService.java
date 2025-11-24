@@ -10,8 +10,8 @@ import java.util.List;
 public interface AttendanceRecordService {
     List<AttendanceRecordResponse> getAllAttendanceRecords();
     AttendanceRecordResponse getAttendanceRecordById(Long attendanceId);
-    List<AttendanceRecordResponse> getAttendanceRecordsByEmployeeId(String employeeId);
-    List<AttendanceRecordResponse> getAttendanceRecordsByEmployeeIdAndDateRange(String employeeId, LocalDate startDate, LocalDate endDate);
+    List<AttendanceRecordResponse> getAttendanceRecordsByUserId(String userId);
+    List<AttendanceRecordResponse> getAttendanceRecordsByUserIdAndDateRange(String userId, LocalDate startDate, LocalDate endDate);
     AttendanceRecordResponse createAttendanceRecord(AttendanceRecordCreateRequest request);
     AttendanceRecordResponse updateAttendanceRecord(Long attendanceId, AttendanceRecordUpdateRequest request);
     void deleteAttendanceRecord(Long attendanceId);

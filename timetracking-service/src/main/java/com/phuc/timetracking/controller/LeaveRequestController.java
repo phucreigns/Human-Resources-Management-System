@@ -40,10 +40,10 @@ public class LeaveRequestController {
                 .build();
     }
 
-    @GetMapping("/employee/{employeeId}")
-    public ApiResponse<List<LeaveRequestResponse>> getLeaveRequestsByEmployeeId(@PathVariable String employeeId) {
+    @GetMapping("/user/{userId}")
+    public ApiResponse<List<LeaveRequestResponse>> getLeaveRequestsByUserId(@PathVariable String userId) {
         return ApiResponse.<List<LeaveRequestResponse>>builder()
-                .result(leaveRequestService.getLeaveRequestsByEmployeeId(employeeId))
+                .result(leaveRequestService.getLeaveRequestsByUserId(userId))
                 .message("Leave requests retrieved successfully")
                 .build();
     }

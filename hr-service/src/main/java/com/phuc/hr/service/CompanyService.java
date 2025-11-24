@@ -3,8 +3,6 @@ package com.phuc.hr.service;
 import com.phuc.hr.dto.request.CompanyCreateRequest;
 import com.phuc.hr.dto.request.CompanyUpdateRequest;
 import com.phuc.hr.dto.response.CompanyResponse;
-import jakarta.transaction.Transactional;
-
 import java.util.List;
 
 public interface CompanyService {

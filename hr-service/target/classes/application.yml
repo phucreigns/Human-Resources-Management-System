@@ -21,3 +21,10 @@ spring:
         jwt:
           issuer-uri: https://${AUTH0_DOMAIN}
 
+timetracking:
+  service:
+    url: ${TIMETRACKING_SERVICE_URL}
+
+payroll:
+  service:
+    url: ${PAYROLL_SERVICE_URL}

@@ -47,8 +47,8 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
     }
 
     @Override
-    public List<LeaveRequestResponse> getLeaveRequestsByEmployeeId(String employeeId) {
-        List<LeaveRequest> leaveRequests = leaveRequestRepository.findByEmployeeId(employeeId);
+    public List<LeaveRequestResponse> getLeaveRequestsByUserId(String userId) {
+        List<LeaveRequest> leaveRequests = leaveRequestRepository.findByUserId(userId);
         return leaveRequests.stream()
                 .map(leaveRequestMapper::toLeaveRequestResponse)
                 .toList();

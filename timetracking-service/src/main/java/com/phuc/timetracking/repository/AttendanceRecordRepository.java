@@ -11,8 +11,8 @@ import java.util.Optional;
 @Repository
 public interface AttendanceRecordRepository extends JpaRepository<AttendanceRecord, Long> {
     Optional<AttendanceRecord> findByAttendanceId(Long attendanceId);
-    List<AttendanceRecord> findByEmployeeId(String employeeId);
-    List<AttendanceRecord> findByEmployeeIdAndAttendanceDateBetween(String employeeId, LocalDate startDate, LocalDate endDate);
-    Optional<AttendanceRecord> findByEmployeeIdAndAttendanceDate(String employeeId, LocalDate attendanceDate);
+    List<AttendanceRecord> findByUserId(String userId);
+    List<AttendanceRecord> findByUserIdAndAttendanceDateBetween(String userId, LocalDate startDate, LocalDate endDate);
+    Optional<AttendanceRecord> findByUserIdAndAttendanceDate(String userId, LocalDate attendanceDate);
 }
 

@@ -44,16 +44,16 @@ public class AttendanceRecordServiceImpl implements AttendanceRecordService {
     }
 
     @Override
-    public List<AttendanceRecordResponse> getAttendanceRecordsByEmployeeId(String employeeId) {
-        List<AttendanceRecord> attendanceRecords = attendanceRecordRepository.findByEmployeeId(employeeId);
+    public List<AttendanceRecordResponse> getAttendanceRecordsByUserId(String userId) {
+        List<AttendanceRecord> attendanceRecords = attendanceRecordRepository.findByUserId(userId);
         return attendanceRecords.stream()
                 .map(attendanceRecordMapper::toAttendanceRecordResponse)
                 .toList();
     }
 
     @Override
-    public List<AttendanceRecordResponse> getAttendanceRecordsByEmployeeIdAndDateRange(String employeeId, LocalDate startDate, LocalDate endDate) {
-        List<AttendanceRecord> attendanceRecords = attendanceRecordRepository.findByEmployeeIdAndAttendanceDateBetween(employeeId, startDate, endDate);
+    public List<AttendanceRecordResponse> getAttendanceRecordsByUserIdAndDateRange(String userId, LocalDate startDate, LocalDate endDate) {
+        List<AttendanceRecord> attendanceRecords = attendanceRecordRepository.findByUserIdAndAttendanceDateBetween(userId, startDate, endDate);
         return attendanceRecords.stream()
                 .map(attendanceRecordMapper::toAttendanceRecordResponse)
                 .toList();

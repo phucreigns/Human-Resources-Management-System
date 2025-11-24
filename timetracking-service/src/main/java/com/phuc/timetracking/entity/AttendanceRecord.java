@@ -35,8 +35,8 @@ public class AttendanceRecord {
     @Column(name = "attendance_id")
     Long attendanceId;
 
-    @Column(name = "employee_id", nullable = false)
-    String employeeId;
+    @Column(name = "user_id", nullable = false)
+    String userId;
 
     @Column(name = "attendance_date", nullable = false)
     LocalDate attendanceDate;

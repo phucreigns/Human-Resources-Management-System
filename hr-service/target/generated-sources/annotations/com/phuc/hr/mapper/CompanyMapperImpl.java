@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.44.0.v20251023-0518, environment: Java 21.0.8 (Eclipse Adoptium)"
+    comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.44.0.v20251118-1623, environment: Java 21.0.9 (Eclipse Adoptium)"
 )
 @Component
 public class CompanyMapperImpl implements CompanyMapper {
@@ -20,16 +20,16 @@ public class CompanyMapperImpl implements CompanyMapper {
             return null;
         }
 
-        Company.CompanyBuilder company = Company.builder();
+        Company company = new Company();
 
-        company.address( request.getAddress() );
-        company.email( request.getEmail() );
-        company.name( request.getName() );
-        company.phone( request.getPhone() );
-        company.status( request.getStatus() );
-        company.taxCode( request.getTaxCode() );
+        company.setName( request.getName() );
+        company.setAddress( request.getAddress() );
+        company.setPhone( request.getPhone() );
+        company.setEmail( request.getEmail() );
+        company.setTaxCode( request.getTaxCode() );
+        company.setStatus( request.getStatus() );
 
-        return company.build();
+        return company;
     }
 
     @Override
@@ -40,14 +40,14 @@ public class CompanyMapperImpl implements CompanyMapper {
 
         CompanyResponse companyResponse = new CompanyResponse();
 
-        companyResponse.setAddress( company.getAddress() );
         companyResponse.setCompanyId( company.getCompanyId() );
-        companyResponse.setCreatedAt( company.getCreatedAt() );
-        companyResponse.setEmail( company.getEmail() );
         companyResponse.setName( company.getName() );
+        companyResponse.setAddress( company.getAddress() );
         companyResponse.setPhone( company.getPhone() );
-        companyResponse.setStatus( company.getStatus() );
+        companyResponse.setEmail( company.getEmail() );
         companyResponse.setTaxCode( company.getTaxCode() );
+        companyResponse.setStatus( company.getStatus() );
+        companyResponse.setCreatedAt( company.getCreatedAt() );
         companyResponse.setUpdatedAt( company.getUpdatedAt() );
 
         return companyResponse;
@@ -59,11 +59,11 @@ public class CompanyMapperImpl implements CompanyMapper {
             return;
         }
 
-        company.setAddress( request.getAddress() );
-        company.setEmail( request.getEmail() );
         company.setName( request.getName() );
+        company.setAddress( request.getAddress() );
         company.setPhone( request.getPhone() );
-        company.setStatus( request.getStatus() );
+        company.setEmail( request.getEmail() );
         company.setTaxCode( request.getTaxCode() );
+        company.setStatus( request.getStatus() );
     }
 }

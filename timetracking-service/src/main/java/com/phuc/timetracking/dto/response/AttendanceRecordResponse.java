@@ -16,7 +16,7 @@ import java.time.LocalTime;
 public class AttendanceRecordResponse {
 
     Long attendanceId;
-    String employeeId;
+    String userId;
     LocalDate attendanceDate;
     LocalTime checkInTime;
     LocalTime checkOutTime;

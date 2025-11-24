@@ -9,7 +9,7 @@ import java.util.List;
 public interface LeaveRequestService {
     List<LeaveRequestResponse> getAllLeaveRequests();
     LeaveRequestResponse getLeaveRequestById(Long leaveRequestId);
-    List<LeaveRequestResponse> getLeaveRequestsByEmployeeId(String employeeId);
+    List<LeaveRequestResponse> getLeaveRequestsByUserId(String userId);
     LeaveRequestResponse createLeaveRequest(LeaveRequestCreateRequest request);
     LeaveRequestResponse updateLeaveRequest(Long leaveRequestId, LeaveRequestUpdateRequest request);
     LeaveRequestResponse approveLeaveRequest(Long leaveRequestId, String approvedBy);

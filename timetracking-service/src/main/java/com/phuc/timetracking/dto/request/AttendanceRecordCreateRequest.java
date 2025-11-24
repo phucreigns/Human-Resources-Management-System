@@ -16,8 +16,8 @@ import java.time.LocalTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AttendanceRecordCreateRequest {
 
-    @NotBlank(message = "Employee ID is required")
-    String employeeId;
+    @NotBlank(message = "User ID is required")
+    String userId;
 
     @NotNull(message = "Attendance date is required")
     LocalDate attendanceDate;

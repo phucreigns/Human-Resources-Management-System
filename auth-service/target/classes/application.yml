@@ -32,3 +32,18 @@ auth0:
 app:
   redirect-url: ${REDIRECT_URL}
 
+notification:
+  service:
+    url: ${NOTIFICATION_SERVICE_URL}
+
+file:
+  service:
+    url: ${FILE_SERVICE_URL}
+
+hr:
+  service:
+    url: ${HR_SERVICE_URL}
+
+timetracking:
+  service:
+    url: ${TIME_TRACKING_SERVICE_URL}

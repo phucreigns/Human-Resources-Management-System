@@ -1,0 +1,35 @@
+server:
+  port: ${PAYROLL_SERVICE_PORT:8094}
+  servlet:
+    context-path: /payroll
+
+spring:
+  application:
+    name: payroll-service
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${PAYROLL_SERVICE_DB:payroll_service_db}
+    driver-class-name: org.postgresql.Driver
+    username: ${POSTGRES_USERNAME}
+    password: ${POSTGRES_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://${AUTH0_DOMAIN}
+
+auth:
+  service:
+    url: ${AUTH_SERVICE_URL}
+  
+hr:
+  service:
+    url: ${HR_SERVICE_URL}
+
+timetracking:
+  service:
+    url: ${TIMETRACKING_SERVICE_URL}
+

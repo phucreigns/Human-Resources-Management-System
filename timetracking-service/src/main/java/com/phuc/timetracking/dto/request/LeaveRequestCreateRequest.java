@@ -14,8 +14,8 @@ import java.time.LocalDate;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class LeaveRequestCreateRequest {
 
-    @NotBlank(message = "Employee ID is required")
-    String employeeId;
+    @NotBlank(message = "User ID is required")
+    String userId;
 
     @NotNull(message = "Leave type ID is required")
     Long leaveTypeId;

@@ -36,8 +36,8 @@ public class LeaveRequest {
     @Column(name = "leave_request_id")
     Long leaveRequestId;
 
-    @Column(name = "employee_id", nullable = false)
-    String employeeId;
+    @Column(name = "user_id", nullable = false)
+    String userId;
 
     @ManyToOne
     @JoinColumn(name = "leave_type_id", nullable = false)

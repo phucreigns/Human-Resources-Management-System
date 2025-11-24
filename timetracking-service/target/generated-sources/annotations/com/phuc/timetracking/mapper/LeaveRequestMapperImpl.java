@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.44.0.v20251023-0518, environment: Java 21.0.8 (Eclipse Adoptium)"
+    comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.44.0.v20251118-1623, environment: Java 21.0.9 (Eclipse Adoptium)"
 )
 @Component
 public class LeaveRequestMapperImpl implements LeaveRequestMapper {
@@ -26,9 +26,9 @@ public class LeaveRequestMapperImpl implements LeaveRequestMapper {
 
         LeaveRequest.LeaveRequestBuilder leaveRequest = LeaveRequest.builder();
 
-        leaveRequest.employeeId( request.getEmployeeId() );
         leaveRequest.endDate( request.getEndDate() );
         leaveRequest.startDate( request.getStartDate() );
+        leaveRequest.userId( request.getUserId() );
 
         return leaveRequest.build();
     }
@@ -43,7 +43,6 @@ public class LeaveRequestMapperImpl implements LeaveRequestMapper {
 
         leaveRequestResponse.approvedBy( leaveRequest.getApprovedBy() );
         leaveRequestResponse.createdAt( leaveRequest.getCreatedAt() );
-        leaveRequestResponse.employeeId( leaveRequest.getEmployeeId() );
         leaveRequestResponse.endDate( leaveRequest.getEndDate() );
         leaveRequestResponse.leaveRequestId( leaveRequest.getLeaveRequestId() );
         leaveRequestResponse.leaveType( leaveTypeMapper.toLeaveTypeResponse( leaveRequest.getLeaveType() ) );
@@ -51,6 +50,7 @@ public class LeaveRequestMapperImpl implements LeaveRequestMapper {
         leaveRequestResponse.status( leaveRequest.getStatus() );
         leaveRequestResponse.totalDays( leaveRequest.getTotalDays() );
         leaveRequestResponse.updatedAt( leaveRequest.getUpdatedAt() );
+        leaveRequestResponse.userId( leaveRequest.getUserId() );
 
         return leaveRequestResponse.build();
     }

@@ -3,8 +3,6 @@ package com.phuc.hr.service;
 import com.phuc.hr.dto.request.PositionCreateRequest;
 import com.phuc.hr.dto.request.PositionUpdateRequest;
 import com.phuc.hr.dto.response.PositionResponse;
-import jakarta.transaction.Transactional;
-
 import java.util.List;
 
 public interface PositionService {

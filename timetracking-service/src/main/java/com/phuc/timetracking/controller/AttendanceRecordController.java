@@ -41,21 +41,21 @@ public class AttendanceRecordController {
                 .build();
     }
 
-    @GetMapping("/employee/{employeeId}")
-    public ApiResponse<List<AttendanceRecordResponse>> getAttendanceRecordsByEmployeeId(@PathVariable String employeeId) {
+    @GetMapping("/user/{userId}")
+    public ApiResponse<List<AttendanceRecordResponse>> getAttendanceRecordsByUserId(@PathVariable String userId) {
         return ApiResponse.<List<AttendanceRecordResponse>>builder()
-                .result(attendanceRecordService.getAttendanceRecordsByEmployeeId(employeeId))
+                .result(attendanceRecordService.getAttendanceRecordsByUserId(userId))
                 .message("Attendance records retrieved successfully")
                 .build();
     }
 
-    @GetMapping("/employee/{employeeId}/date-range")
+    @GetMapping("/user/{userId}/date-range")
     public ApiResponse<List<AttendanceRecordResponse>> getAttendanceRecordsByDateRange(
-            @PathVariable String employeeId,
+            @PathVariable String userId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
         return ApiResponse.<List<AttendanceRecordResponse>>builder()
-                .result(attendanceRecordService.getAttendanceRecordsByEmployeeIdAndDateRange(employeeId, startDate, endDate))
+                .result(attendanceRecordService.getAttendanceRecordsByUserIdAndDateRange(userId, startDate, endDate))
                 .message("Attendance records retrieved successfully")
                 .build();
     }

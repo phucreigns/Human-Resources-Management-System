@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface LeaveRequestRepository extends JpaRepository<LeaveRequest, Long> {
     Optional<LeaveRequest> findByLeaveRequestId(Long leaveRequestId);
-    List<LeaveRequest> findByEmployeeId(String employeeId);
+    List<LeaveRequest> findByUserId(String userId);
     List<LeaveRequest> findByStatus(com.phuc.timetracking.enums.LeaveRequestStatus status);
 }
 
