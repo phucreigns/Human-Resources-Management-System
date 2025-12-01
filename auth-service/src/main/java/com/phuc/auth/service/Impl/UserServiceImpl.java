@@ -15,7 +15,6 @@ import com.phuc.auth.httpclient.NotificationClient;
 import com.phuc.auth.mapper.UserMapper;
 import com.phuc.auth.repository.UserRepository;
 import com.phuc.auth.service.UserService;
-
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
@@ -94,12 +93,9 @@ public class UserServiceImpl implements UserService {
 
             Auth0UserInfo userInfo = auth0Client.getUserInfo("Bearer " + tokenResponse.getAccessToken());
             
-            // Try to find user by auth0Id first (most reliable), then by email
-            // If not found, create new user. Handle duplicate key exceptions gracefully.
             String auth0Id = userInfo.getSub();
             String email = userInfo.getEmail();
             
-            // First, try to find existing user
             User user = userRepository.findByAuth0Id(auth0Id)
                     .orElseGet(() -> {
                         if (email != null && !email.isEmpty()) {
@@ -108,25 +104,21 @@ public class UserServiceImpl implements UserService {
                         return null;
                     });
             
-            // If user not found, try to create new user with retry logic
             if (user == null) {
                 user = createUserWithRetry(userInfo, auth0Id, email);
             }
             
-            // Update user info from Auth0 if user exists but auth0Id is missing or different
             boolean needsUpdate = false;
             if (user.getAuth0Id() == null || !user.getAuth0Id().equals(auth0Id)) {
                 user.setAuth0Id(auth0Id);
                 needsUpdate = true;
             }
             
-            // Update email if it's missing or different
             if ((user.getEmail() == null || user.getEmail().isEmpty()) && email != null && !email.isEmpty()) {
                 user.setEmail(email);
                 needsUpdate = true;
             }
             
-            // Save once if any update is needed
             if (needsUpdate) {
                 userRepository.save(user);
                 entityManager.flush();
@@ -227,24 +219,16 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    /**
-     * Create user with retry logic to handle race conditions
-     * When multiple requests try to create the same user simultaneously
-     * Uses synchronized block and EntityManager flush to ensure data consistency
-     */
     private User createUserWithRetry(Auth0UserInfo userInfo, String auth0Id, String email) {
         int maxRetries = 5;
-        long retryDelayMs = 200; // 200ms base delay between retries
+        long retryDelayMs = 200;
         
-        // Use synchronized block to prevent concurrent creation attempts
         synchronized (("createUser_" + auth0Id).intern()) {
             for (int attempt = 1; attempt <= maxRetries; attempt++) {
                 try {
-                    // Flush entity manager to ensure we see latest data from database
                     entityManager.flush();
                     entityManager.clear();
                     
-                    // Before creating, check again if user was created by another thread
                     User existingUser = userRepository.findByAuth0Id(auth0Id)
                             .orElseGet(() -> {
                                 if (email != null && !email.isEmpty()) {
@@ -258,37 +242,30 @@ public class UserServiceImpl implements UserService {
                         return existingUser;
                     }
                     
-                    // Try to create new user
                     User newUser = createNewUSer(userInfo);
-                    // Flush immediately to commit the transaction
                     entityManager.flush();
                     entityManager.refresh(newUser);
                     log.info("Successfully created user on attempt {}: auth0Id={}, email={}", attempt, auth0Id, email);
                     return newUser;
                     
                 } catch (org.springframework.dao.DataIntegrityViolationException ex) {
-                    // Duplicate key exception - another thread created the user
                     log.warn("Duplicate user detected on attempt {}: auth0Id={}, email={}, error={}", 
                             attempt, auth0Id, email, ex.getMessage());
                     
-                    // Flush and clear to see latest data
                     entityManager.flush();
                     entityManager.clear();
                     
-                    // Wait a bit before retrying to allow the other transaction to commit
                     if (attempt < maxRetries) {
                         try {
-                            Thread.sleep(retryDelayMs * attempt); // Exponential backoff: 200ms, 400ms, 600ms, 800ms, 1000ms
+                            Thread.sleep(retryDelayMs * attempt);
                         } catch (InterruptedException ie) {
                             Thread.currentThread().interrupt();
                             log.error("Thread interrupted during retry delay");
                         }
                         
-                        // Flush again after waiting
                         entityManager.flush();
                         entityManager.clear();
                         
-                        // Try to find the user that was created by another thread
                         User foundUser = userRepository.findByAuth0Id(auth0Id)
                                 .orElseGet(() -> {
                                     if (email != null && !email.isEmpty()) {
@@ -303,10 +280,9 @@ public class UserServiceImpl implements UserService {
                             return foundUser;
                         }
                     } else {
-                        // Last attempt failed, try one more time to find user with longer delay
                         log.warn("Max retries reached, attempting final lookup with extended delay: auth0Id={}, email={}", auth0Id, email);
                         try {
-                            Thread.sleep(retryDelayMs * 2); // Wait a bit longer for final attempt
+                            Thread.sleep(retryDelayMs * 2);
                         } catch (InterruptedException ie) {
                             Thread.currentThread().interrupt();
                         }
@@ -332,7 +308,6 @@ public class UserServiceImpl implements UserService {
                         throw new AppException(ErrorCode.USER_NOT_EXISTED);
                     }
                 } catch (AppException ex) {
-                    // Re-throw AppException
                     throw ex;
                 } catch (Exception ex) {
                     log.error("Error creating user on attempt {}: auth0Id={}, email={}, error={}", 
@@ -340,7 +315,6 @@ public class UserServiceImpl implements UserService {
                     if (attempt == maxRetries) {
                         throw new AppException(ErrorCode.EXTERNAL_SERVICE_ERROR);
                     }
-                    // Wait before retry
                     try {
                         Thread.sleep(retryDelayMs * attempt);
                     } catch (InterruptedException ie) {
@@ -351,7 +325,6 @@ public class UserServiceImpl implements UserService {
             }
         }
         
-        // Should not reach here, but just in case
         throw new AppException(ErrorCode.USER_NOT_EXISTED);
     }
 
@@ -362,16 +335,12 @@ public class UserServiceImpl implements UserService {
         String email = userInfo.getEmail();
         String phoneNumber = userInfo.getPhoneNumber() != null ? userInfo.getPhoneNumber() : "";
         
-        // Ensure email is not null or empty - use fallback if needed
         if (email == null || email.isEmpty()) {
-            // Try to extract email from auth0Id or use preferred_username
             if (userInfo.getPreferredUsername() != null && !userInfo.getPreferredUsername().isEmpty()) {
                 email = userInfo.getPreferredUsername();
             } else if (auth0Id != null && auth0Id.contains("@")) {
-                // Some Auth0 IDs contain email
                 email = auth0Id;
             } else {
-                // Last resort: use auth0Id as email placeholder (will need to be updated later)
                 email = auth0Id + "@auth0.temp";
                 log.warn("Email not found in Auth0 user info, using temporary email: auth0Id={}, email={}", auth0Id, email);
             }
@@ -379,7 +348,6 @@ public class UserServiceImpl implements UserService {
         
         String fullName = firstName + " " + lastName;
         
-        // Trim fullName to remove extra spaces if firstName or lastName is empty
         fullName = fullName.trim();
         if (fullName.isEmpty()) {
             fullName = userInfo.getName() != null ? userInfo.getName() : email;
@@ -419,11 +387,9 @@ public class UserServiceImpl implements UserService {
             throw new AppException(ErrorCode.EMAIL_IS_EMPTY);
         }
         
-        // Get user info from JWT
         Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String auth0Id = jwt.getClaim("sub");
         
-        // First, try to find existing user
         User user = userRepository.findByAuth0Id(auth0Id)
                 .orElseGet(() -> {
                     if (email != null && !email.isEmpty()) {
@@ -432,25 +398,21 @@ public class UserServiceImpl implements UserService {
                     return null;
                 });
         
-        // If user not found, try to create new user with retry logic
         if (user == null) {
             user = createUserFromJwtWithRetry(jwt, auth0Id, email);
         }
         
-        // Update user info from JWT if user exists but auth0Id is missing or different
         boolean needsUpdate = false;
         if (user.getAuth0Id() == null || !user.getAuth0Id().equals(auth0Id)) {
             user.setAuth0Id(auth0Id);
             needsUpdate = true;
         }
         
-        // Update email if it's missing or different
         if ((user.getEmail() == null || user.getEmail().isEmpty()) && email != null && !email.isEmpty()) {
             user.setEmail(email);
             needsUpdate = true;
         }
         
-        // Save once if any update is needed
         if (needsUpdate) {
             userRepository.save(user);
             entityManager.flush();
@@ -460,23 +422,16 @@ public class UserServiceImpl implements UserService {
         return userMapper.toUserResponse(user);
     }
     
-    /**
-     * Create user from JWT with retry logic to handle race conditions
-     * Uses synchronized block and EntityManager flush to ensure data consistency
-     */
     private User createUserFromJwtWithRetry(Jwt jwt, String auth0Id, String email) {
         int maxRetries = 5;
-        long retryDelayMs = 200; // 200ms base delay between retries
+        long retryDelayMs = 200;
         
-        // Use synchronized block to prevent concurrent creation attempts
         synchronized (("createUser_" + auth0Id).intern()) {
             for (int attempt = 1; attempt <= maxRetries; attempt++) {
                 try {
-                    // Flush entity manager to ensure we see latest data from database
                     entityManager.flush();
                     entityManager.clear();
                     
-                    // Before creating, check again if user was created by another thread
                     User existingUser = userRepository.findByAuth0Id(auth0Id)
                             .orElseGet(() -> {
                                 if (email != null && !email.isEmpty()) {
@@ -490,7 +445,6 @@ public class UserServiceImpl implements UserService {
                         return existingUser;
                     }
                     
-                    // Get user info from JWT to create user
                     String name = jwt.getClaim("name");
                     String givenName = jwt.getClaim("given_name");
                     String familyName = jwt.getClaim("family_name");
@@ -512,7 +466,6 @@ public class UserServiceImpl implements UserService {
                             .build();
                     
                     userRepository.save(newUser);
-                    // Flush immediately to commit the transaction
                     entityManager.flush();
                     entityManager.refresh(newUser);
                     log.info("Successfully created new user from JWT on attempt {}: auth0Id={}, email={}, fullName={}", 
@@ -520,28 +473,23 @@ public class UserServiceImpl implements UserService {
                     return newUser;
                     
                 } catch (org.springframework.dao.DataIntegrityViolationException ex) {
-                    // Duplicate key exception - another thread created the user
                     log.warn("Duplicate user detected in getMyInfo on attempt {}: auth0Id={}, email={}, error={}", 
                             attempt, auth0Id, email, ex.getMessage());
                     
-                    // Flush and clear to see latest data
                     entityManager.flush();
                     entityManager.clear();
                     
-                    // Wait a bit before retrying to allow the other transaction to commit
                     if (attempt < maxRetries) {
                         try {
-                            Thread.sleep(retryDelayMs * attempt); // Exponential backoff: 200ms, 400ms, 600ms, 800ms, 1000ms
+                            Thread.sleep(retryDelayMs * attempt);
                         } catch (InterruptedException ie) {
                             Thread.currentThread().interrupt();
                             log.error("Thread interrupted during retry delay in getMyInfo");
                         }
                         
-                        // Flush again after waiting
                         entityManager.flush();
                         entityManager.clear();
                         
-                        // Try to find the user that was created by another thread
                         User foundUser = userRepository.findByAuth0Id(auth0Id)
                                 .orElseGet(() -> {
                                     if (email != null && !email.isEmpty()) {
@@ -556,10 +504,9 @@ public class UserServiceImpl implements UserService {
                             return foundUser;
                         }
                     } else {
-                        // Last attempt failed, try one more time to find user with longer delay
                         log.warn("Max retries reached in getMyInfo, attempting final lookup with extended delay: auth0Id={}, email={}", auth0Id, email);
                         try {
-                            Thread.sleep(retryDelayMs * 2); // Wait a bit longer for final attempt
+                            Thread.sleep(retryDelayMs * 2);
                         } catch (InterruptedException ie) {
                             Thread.currentThread().interrupt();
                         }
@@ -585,7 +532,6 @@ public class UserServiceImpl implements UserService {
                         throw new AppException(ErrorCode.USER_NOT_EXISTED);
                     }
                 } catch (AppException ex) {
-                    // Re-throw AppException
                     throw ex;
                 } catch (Exception ex) {
                     log.error("Error creating user from JWT in getMyInfo on attempt {}: auth0Id={}, email={}, error={}", 
@@ -593,7 +539,6 @@ public class UserServiceImpl implements UserService {
                     if (attempt == maxRetries) {
                         throw new AppException(ErrorCode.EXTERNAL_SERVICE_ERROR);
                     }
-                    // Wait before retry
                     try {
                         Thread.sleep(retryDelayMs * attempt);
                     } catch (InterruptedException ie) {
@@ -604,7 +549,6 @@ public class UserServiceImpl implements UserService {
             }
         }
         
-        // Should not reach here, but just in case
         throw new AppException(ErrorCode.USER_NOT_EXISTED);
     }
 

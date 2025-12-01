@@ -5,8 +5,6 @@ com/phuc/auth/dto/auth0/Auth0TokenResponse.class
 com/phuc/auth/mapper/UserMapperImpl.class
 com/phuc/auth/dto/auth0/Auth0UserInfo$Auth0UserInfoBuilder.class
 com/phuc/auth/dto/request/UserCreateRequest.class
-com/phuc/auth/httpclient/request/Recipient.class
-com/phuc/auth/httpclient/request/SendEmailRequest.class
 com/phuc/auth/entity/User.class
 com/phuc/auth/AuthServiceApplication.class
 com/phuc/auth/service/UserService.class
@@ -15,7 +13,6 @@ com/phuc/auth/dto/response/TokenResponse.class
 com/phuc/auth/dto/auth0/Auth0TokenResponse$Auth0TokenResponseBuilder.class
 com/phuc/auth/httpclient/response/FileResponse.class
 com/phuc/auth/mapper/UserMapper.class
-com/phuc/auth/httpclient/response/EmailResponse.class
 com/phuc/auth/service/Impl/UserServiceImpl.class
 com/phuc/auth/dto/request/RefreshTokenRequest$RefreshTokenRequestBuilder.class
 com/phuc/auth/configuration/JwtAuthenticationEntryPoint.class
@@ -28,16 +25,13 @@ com/phuc/auth/httpclient/FileClient.class
 com/phuc/auth/dto/auth0/Auth0UserInfo.class
 com/phuc/auth/dto/request/UserUpdateRequest.class
 com/phuc/auth/configuration/OpenAPIConfig.class
-com/phuc/auth/httpclient/request/SendEmailRequest$SendEmailRequestBuilder.class
 com/phuc/auth/dto/request/RefreshTokenRequest.class
 com/phuc/auth/controller/UserController.class
 com/phuc/auth/exception/GlobalExceptionHandler.class
 com/phuc/auth/dto/response/TokenResponse$TokenResponseBuilder.class
 com/phuc/auth/configuration/SecurityConfig.class
-com/phuc/auth/httpclient/response/EmailResponse$EmailResponseBuilder.class
 com/phuc/auth/exception/AppException.class
 com/phuc/auth/httpclient/NotificationClient.class
-com/phuc/auth/httpclient/request/Recipient$RecipientBuilder.class
 com/phuc/auth/entity/User$UserBuilder.class
 com/phuc/auth/exception/ErrorCode.class
 com/phuc/auth/dto/request/UserCreateRequest$UserCreateRequestBuilder.class

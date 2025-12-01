@@ -20,9 +20,6 @@
 /Users/xuanphuc/Documents/Project/project-5m/HRMS/HR-Management-System/auth-service/src/main/java/com/phuc/auth/httpclient/Auth0Client.java
 /Users/xuanphuc/Documents/Project/project-5m/HRMS/HR-Management-System/auth-service/src/main/java/com/phuc/auth/httpclient/FileClient.java
 /Users/xuanphuc/Documents/Project/project-5m/HRMS/HR-Management-System/auth-service/src/main/java/com/phuc/auth/httpclient/NotificationClient.java
-/Users/xuanphuc/Documents/Project/project-5m/HRMS/HR-Management-System/auth-service/src/main/java/com/phuc/auth/httpclient/request/Recipient.java
-/Users/xuanphuc/Documents/Project/project-5m/HRMS/HR-Management-System/auth-service/src/main/java/com/phuc/auth/httpclient/request/SendEmailRequest.java
-/Users/xuanphuc/Documents/Project/project-5m/HRMS/HR-Management-System/auth-service/src/main/java/com/phuc/auth/httpclient/response/EmailResponse.java
 /Users/xuanphuc/Documents/Project/project-5m/HRMS/HR-Management-System/auth-service/src/main/java/com/phuc/auth/httpclient/response/FileResponse.java
 /Users/xuanphuc/Documents/Project/project-5m/HRMS/HR-Management-System/auth-service/src/main/java/com/phuc/auth/mapper/UserMapper.java
 /Users/xuanphuc/Documents/Project/project-5m/HRMS/HR-Management-System/auth-service/src/main/java/com/phuc/auth/repository/UserRepository.java

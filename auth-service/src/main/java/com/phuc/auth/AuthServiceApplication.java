@@ -25,7 +25,7 @@ public class AuthServiceApplication {
         System.setProperty("FILE_SERVICE_URL", dotenv.get("FILE_SERVICE_URL", ""));
 		System.setProperty("NOTIFICATION_SERVICE_URL", dotenv.get("NOTIFICATION_SERVICE_URL", ""));
 		System.setProperty("HR_SERVICE_URL", dotenv.get("HR_SERVICE_URL", ""));
-		System.setProperty("TIME_TRACKING_SERVICE_URL", dotenv.get("TIME_TRACKING_SERVICE_URL", ""));
+		System.setProperty("TIMETRACKING_SERVICE_URL", dotenv.get("TIMETRACKING_SERVICE_URL", ""));
 
 		String auth0IssuerUri = dotenv.get("AUTH0_ISSUER_URI", "");
 		if (auth0IssuerUri.startsWith("http://")) {

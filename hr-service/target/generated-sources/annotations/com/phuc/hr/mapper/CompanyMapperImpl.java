@@ -20,16 +20,16 @@ public class CompanyMapperImpl implements CompanyMapper {
             return null;
         }
 
-        Company company = new Company();
+        Company.CompanyBuilder company = Company.builder();
 
-        company.setName( request.getName() );
-        company.setAddress( request.getAddress() );
-        company.setPhone( request.getPhone() );
-        company.setEmail( request.getEmail() );
-        company.setTaxCode( request.getTaxCode() );
-        company.setStatus( request.getStatus() );
+        company.address( request.getAddress() );
+        company.email( request.getEmail() );
+        company.name( request.getName() );
+        company.phone( request.getPhone() );
+        company.status( request.getStatus() );
+        company.taxCode( request.getTaxCode() );
 
-        return company;
+        return company.build();
     }
 
     @Override
@@ -40,14 +40,14 @@ public class CompanyMapperImpl implements CompanyMapper {
 
         CompanyResponse companyResponse = new CompanyResponse();
 
-        companyResponse.setCompanyId( company.getCompanyId() );
-        companyResponse.setName( company.getName() );
         companyResponse.setAddress( company.getAddress() );
-        companyResponse.setPhone( company.getPhone() );
-        companyResponse.setEmail( company.getEmail() );
-        companyResponse.setTaxCode( company.getTaxCode() );
-        companyResponse.setStatus( company.getStatus() );
+        companyResponse.setCompanyId( company.getCompanyId() );
         companyResponse.setCreatedAt( company.getCreatedAt() );
+        companyResponse.setEmail( company.getEmail() );
+        companyResponse.setName( company.getName() );
+        companyResponse.setPhone( company.getPhone() );
+        companyResponse.setStatus( company.getStatus() );
+        companyResponse.setTaxCode( company.getTaxCode() );
         companyResponse.setUpdatedAt( company.getUpdatedAt() );
 
         return companyResponse;
@@ -59,11 +59,11 @@ public class CompanyMapperImpl implements CompanyMapper {
             return;
         }
 
-        company.setName( request.getName() );
         company.setAddress( request.getAddress() );
-        company.setPhone( request.getPhone() );
         company.setEmail( request.getEmail() );
-        company.setTaxCode( request.getTaxCode() );
+        company.setName( request.getName() );
+        company.setPhone( request.getPhone() );
         company.setStatus( request.getStatus() );
+        company.setTaxCode( request.getTaxCode() );
     }
 }

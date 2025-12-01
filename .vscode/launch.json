@@ -39,7 +39,8 @@
             "mainClass": "com.phuc.file.FileServiceApplication",
             "projectName": "file-service",
             "args": "",
-            "envFile": "${workspaceFolder}/.env"
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=51717 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=file-service"
         },
         {
             "type": "java",
@@ -90,7 +91,8 @@
             "mainClass": "com.phuc.auth.AuthServiceApplication",
             "projectName": "auth-service",
             "args": "",
-            "envFile": "${workspaceFolder}/.env"
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=51682 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=auth-service"
         },
         {
             "type": "java",
@@ -99,6 +101,16 @@
             "cwd": "${workspaceFolder}",
             "mainClass": "com.phuc.payroll.PayrollServiceApplication",
             "projectName": "payroll-service",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-PaymentServiceApplication<payment-service>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.phuc.payment.PaymentServiceApplication",
+            "projectName": "payment-service",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
         }
