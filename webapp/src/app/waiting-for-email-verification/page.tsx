@@ -81,7 +81,7 @@ export default function WaitingForEmailVerificationPage() {
             Kiểm tra email của bạn
           </h2>
           <p className="text-center text-sm text-gray-600 mb-6">
-            Chúng tôi đã gửi một email xác thực đến địa chỉ email của bạn
+            Chúng tôi đã gửi email xác thực đến địa chỉ email của bạn
           </p>
 
           {/* Email Display */}

@@ -1,3 +1,4 @@
 .env
 docker-compose.yml
 *.cursorrules
+.env.local.example
