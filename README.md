@@ -44,44 +44,6 @@ HR-Management-System/
 - Node.js 18+
 - PostgreSQL 15+
 
-### **Development Setup:**
-
-📖 **Xem hướng dẫn chi tiết:**
-- **[SETUP_GUIDE.md](SETUP_GUIDE.md)** - Hướng dẫn đầy đủ từng bước
-- **[QUICK_START.md](QUICK_START.md)** - Hướng dẫn nhanh 5 phút
-
-### **Tóm tắt các bước:**
-
-1. **Setup Database PostgreSQL**
-   ```bash
-   psql -U postgres
-   CREATE DATABASE "HrService";
-   CREATE DATABASE "TimeTrackingService";
-   ```
-
-2. **Tạo file `.env`** ở root project với cấu hình PostgreSQL và Auth0
-
-3. **Chạy Backend Services:**
-   ```bash
-   # Terminal 1 - HR Service
-   cd hr-service && mvn spring-boot:run
-   
-   # Terminal 2 - Time Tracking Service
-   cd timetracking-service && mvn spring-boot:run
-   ```
-
-4. **Chạy Frontend:**
-   ```bash
-   cd frontend
-   npm install
-   npm run dev
-   ```
-
-5. **Truy cập:**
-   - Frontend: http://localhost:3000
-   - HR Swagger: http://localhost:8091/hr/swagger-ui.html
-   - Time Tracking Swagger: http://localhost:8092/timetracking/swagger-ui.html
-
 ---
 
 ## 📊 **Cost Analysis**
@@ -228,19 +190,6 @@ GET    /api/v1/email-templates
 - **Unified logging** - centralized logging
 - **Single database** - for core HR functions
 - **Faster debugging** - fewer network calls
-
----
-
-## 📚 **Documentation**
-
-### **Setup & Development:**
-- **[SETUP_GUIDE.md](SETUP_GUIDE.md)** - Hướng dẫn setup chi tiết từng bước
-- **[QUICK_START.md](QUICK_START.md)** - Hướng dẫn nhanh để chạy hệ thống
-- **[Development Guidelines](.cursorrules)** - Coding standards and best practices
-
-### **Architecture:**
-- **[Consolidated Architecture](consolidated-architecture.md)** - Detailed architecture design
-- **[Architecture Diagrams](consolidated-diagram.md)** - Visual diagrams and cost analysis
 
 ---
 
