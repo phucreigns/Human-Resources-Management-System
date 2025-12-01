@@ -2,8 +2,6 @@
 
 ## 🎯 **Project Overview**
 
-HR Management System được thiết kế theo kiến trúc **consolidated microservices** với **3 services chính** để tối ưu chi phí deployment và maintenance.
-
 ---
 
 ## 🏗️ **Architecture Overview**
