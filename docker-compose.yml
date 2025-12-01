@@ -1,0 +1,54 @@
+version: "3.9"
+
+services:
+  postgres-hrms:
+    image: pgvector/pgvector:pg15
+    container_name: postgres-hrms
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=
+      - POSTGRES_PASSWORD=
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - phuc-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgreshrms"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  mongodb-hrms:
+    image: mongodb/mongodb-community-server:7.0.5-ubi8
+    container_name: mongodb-hrms    
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=
+      - MONGO_INITDB_ROOT_PASSWORD=
+    volumes:
+      - mongodb-data:/data/db
+    networks:
+      - phuc-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+
+volumes:
+  mongodb-data:
+    driver: local
+  postgres_data:
+    driver: local
+
+networks:
+  phuc-network:
+    driver: bridge
+
+
+
+
