@@ -28,7 +28,6 @@
 ```
 HR-Management-System/
 ├── README.md                           # Project overview
-├── .cursorrules                        # Development guidelines
 ├── docker-compose.yml                  # Docker deployment
 ├── consolidated-architecture.md        # Detailed architecture
 └── consolidated-diagram.md            # Architecture diagrams
